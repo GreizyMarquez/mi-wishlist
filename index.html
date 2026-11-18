@@ -297,6 +297,7 @@ const store = { get(k){ try { return localStorage.getItem(k); } catch { return n
 if (location.hash === "#soy-la-cumpleanera") { store.set("wl_bday","1"); history.replaceState(null,"",location.pathname); }
 if (location.hash === "#ver-todo") { store.del("wl_bday"); history.replaceState(null,"",location.pathname); }
 const BDAY = store.get("wl_bday") === "1";
+const HAS_API = API.startsWith("https://");
 document.body.classList.toggle("bday", BDAY);
 
 /* token anónimo de este celular */
@@ -327,7 +328,7 @@ function renderMeta(){
   $("#subtitle").textContent = meta.subtitle || ""; $("#occasion").textContent = meta.occasion || "Lista de deseos";
   $("#countLbl").textContent = meta.countLbl || "Faltan";
   document.title = `${meta.t1||"Mi"} ${meta.t2||"wishlist"} 💎`; tick();
-  $("#howto").hidden = BDAY; $("#bdayNote").hidden = !BDAY; $("#chipFree").hidden = BDAY;
+  $("#howto").hidden = BDAY || !HAS_API; $("#bdayNote").hidden = !BDAY; $("#chipFree").hidden = BDAY;
 }
 
 function render(){
@@ -342,7 +343,7 @@ function render(){
     const gem = gemOf(it.color, i), tint = TINT[gem.img], taken = isTaken(it), my = mine.has(it.id) && claimed.has(it.id);
     const rot = ((hash(it.id) % 5) - 2) * .7, link = safeUrl(it.link), price = fmtPrice(it), src = it.photo;
     let action = "";
-    if (!BDAY){
+    if (!BDAY && HAS_API){
       if (my) action = `<div class="btn done">🎁 ¡Lo vas a regalar tú!</div><button class="btn small" data-act="release">Ya no lo voy a regalar</button>`;
       else if (taken) action = `<div class="btn done">✓ Alguien ya lo va a regalar</div>`;
       else action = `<button class="btn gift" data-act="claim">🎁 Yo se lo regalo</button>`;

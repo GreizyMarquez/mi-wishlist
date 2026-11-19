@@ -199,6 +199,9 @@ textarea{min-height:80px;resize:vertical;font-family:"Caveat",cursive;font-size:
 .btn.nara{background:#E9F9EF;color:#1F7A4A;border-color:#CDEBD8}
 .howto{max-width:520px;margin:16px auto 0;padding:12px 16px;border-radius:18px;font-size:13.5px;line-height:1.45;color:var(--soft)}
 .btn.small{font-size:12px;padding:7px 10px;color:var(--soft)}
+.fbtn{display:block;width:100%;margin-top:8px;border:0;border-radius:999px;padding:8px 10px;font-weight:700;font-size:12.5px;background:var(--hot);color:#fff;box-shadow:0 6px 14px rgba(232,49,127,.28)}
+.fbtn.off{background:#F3EDF1;color:var(--soft);box-shadow:none;text-align:center}
+.fbtn.mine{background:#E9F9EF;color:#1F7A4A;box-shadow:none;text-align:center}
 .btn.nara{background:#E9F9EF;color:#1F7A4A;border-color:#CDEBD8}
 .chip.surprise img{width:30px;height:30px;animation:spinY 3s linear infinite}
 .roul .ball{width:120px}
@@ -370,6 +373,12 @@ function render(){
       else if (taken) action = `<div class="btn done">✓ Alguien ya lo va a regalar</div>`;
       else action = `<button class="btn gift" data-act="claim">🎁 Yo se lo regalo</button>`;
     }
+    let frontBtn = "";
+    if (!BDAY && HAS_API){
+      if (my) frontBtn = `<div class="fbtn mine">🎁 Lo regalas tú</div>`;
+      else if (taken) frontBtn = `<div class="fbtn off">Ya apartado</div>`;
+      else frontBtn = `<button class="fbtn" data-act="claim">🎁 Yo se lo regalo</button>`;
+    }
     return `<article class="card ${taken?"reserved":""}" data-id="${esc(it.id)}" style="--c:${tint};--r:${rot}deg;--d:${Math.min(i,12)*0.05}s">
       ${src?`<img class="badge shadow" src="${art(gem.img)}" alt="">`:""}
       <div class="inner">
@@ -377,7 +386,7 @@ function render(){
           <span class="prio">${PRIO[it.prio||2]}</span>
           <div class="visual">${src?`<img class="ph" src="${esc(src)}" alt="" loading="lazy">`:`<img class="gemph" src="${art(gem.img)}" alt="">`}
             ${taken?`<div class="stamp"><span>${my?"¡Tuyo! 🎁":"Ya apartado"}</span></div>`:""}</div>
-          <div class="meta">${price?`<span class="price">${price}</span>`:""}<div class="gemname">${gem.name}</div><h3>${esc(it.name)}</h3></div>
+          <div class="meta">${price?`<span class="price">${price}</span>`:""}<div class="gemname">${gem.name}</div><h3>${esc(it.name)}</h3>${frontBtn}</div>
         </div>
         <div class="face back">
           <div class="bt">${esc(it.name)}</div>

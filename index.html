@@ -202,6 +202,7 @@ textarea{min-height:80px;resize:vertical;font-family:"Caveat",cursive;font-size:
 .fbtn{display:block;width:100%;margin-top:8px;border:0;border-radius:999px;padding:8px 10px;font-weight:700;font-size:12.5px;background:var(--hot);color:#fff;box-shadow:0 6px 14px rgba(232,49,127,.28)}
 .fbtn.off{background:#F3EDF1;color:var(--soft);box-shadow:none;text-align:center}
 .fbtn.mine{background:#E9F9EF;color:#1F7A4A;box-shadow:none;text-align:center}
+.flipHint{font-size:11px;font-weight:600;color:var(--hot);margin-top:6px;letter-spacing:.02em}
 .btn.nara{background:#E9F9EF;color:#1F7A4A;border-color:#CDEBD8}
 .chip.surprise img{width:30px;height:30px;animation:spinY 3s linear infinite}
 .roul .ball{width:120px}
@@ -373,12 +374,7 @@ function render(){
       else if (taken) action = `<div class="btn done">✓ Alguien ya lo va a regalar</div>`;
       else action = `<button class="btn gift" data-act="claim">🎁 Yo se lo regalo</button>`;
     }
-    let frontBtn = "";
-    if (!BDAY && HAS_API){
-      if (my) frontBtn = `<div class="fbtn mine">🎁 Lo regalas tú</div>`;
-      else if (taken) frontBtn = `<div class="fbtn off">Ya apartado</div>`;
-      else frontBtn = `<button class="fbtn" data-act="claim">🎁 Yo se lo regalo</button>`;
-    }
+    const frontBtn = (!BDAY && HAS_API && !taken) ? `<div class="flipHint">Toca para ver más y regalármelo ↻</div>` : "";
     return `<article class="card ${taken?"reserved":""}" data-id="${esc(it.id)}" style="--c:${tint};--r:${rot}deg;--d:${Math.min(i,12)*0.05}s">
       ${src?`<img class="badge shadow" src="${art(gem.img)}" alt="">`:""}
       <div class="inner">
